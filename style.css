@@ -1,0 +1,15 @@
+.text-center{
+    margin:auto;
+}
+a{
+    font-size: 30px;
+}
+.right-align{
+    float:right;
+}
+.btn-primary{
+    margin:auto;
+    margin-top: 5px;
+    width: 200px;
+    display:block;
+}

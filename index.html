@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <header>
+        <a>View Highscores</a>
+        <a class="right-align">Time: <span id="timer">0</span></a>
+    </header>
+    <div id="main-box" class="col-md-4 text-center">
+        <h2 id="question">League of Legends quiz</h2>
+        <p id="delete-me-fast">This is a comprehensive timed quiz on your knowledge of high level league of legends try
+            to get the highest score you can!</p>
+        <button class="btn btn-success">Start Quiz</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var quiz = [
+            ["Who is the best champion in league?", "Draven", "Jinx", "Anivia", "Soraka", 1],
+            ["What is it called when you are on the side of the map with the enemy jungle while your jungler is on the opposite side?", "Blindside", "Ganked", "Dove", "Weakside", 4],
+            ["What role does apdo/dopa play?", "Top", "Mid", "Jungle", "Support", 2],
+            ["Which of the following is an assassin?", "Janna", "Malphite", "Talon", "Lucian", 3],
+            ["How much gold does a BF sword cost?", "1500", "2700", "1300", "875", 3]
+
+        ]
+        var timersCount = 70;
+        var quizIndex = 0;
+        var timerID;
+
+        $(".btn-success").on("click", function () {
+            // initialize quiz
+            initQuiz();
+        })
+
+        function initQuiz() {
+            startTimer();
+            $("#main-box").empty();
+            formatQuestions(quizIndex)
+        }
+
+        function formatQuestions(index) {
+            if (index >= quiz.length) {
+                endQuiz();
+            }
+            else {
+                $mainBox = $("#main-box");
+                $mainBox.empty();
+                $question = $(`<h2>${quiz[index][0]}</h2>`);
+                $answer1 = $(`<button id= "btn-answer" class= "btn btn-primary" value= "1">${quiz[index][1]}</button>`);
+                $answer2 = $(`<button id= "btn-answer" class= "btn btn-primary" value= "2">${quiz[index][2]}</button>`);
+                $answer3 = $(`<button id= "btn-answer" class= "btn btn-primary" value= "3">${quiz[index][3]}</button>`);
+                $answer4 = $(`<button id= "btn-answer" class= "btn btn-primary" value= "4">${quiz[index][4]}</button>`);
+                $mainBox.append($question, $answer1, $answer2, $answer3, $answer4);
+            }
+        }
+
+        $(document).on("click", "#btn-answer", function () {
+            var theirAnswer = $(this).val();
+            var correctAnswer = quiz[quizIndex][5]
+            if (theirAnswer == correctAnswer) {
+                quizIndex++;
+                formatQuestions(quizIndex);
+            }
+            else {
+                timersCount -= 10;
+                if (timersCount <= 0) {
+                    timersCount = 0;
+                    endQuiz();
+                }
+                quizIndex++;
+                formatQuestions(quizIndex);
+            }
+        })
+
+        function startTimer() {
+            timerID = setInterval(function () {
+                $("#timer").text(timersCount);
+                timersCount--;
+                if (timersCount < 0) {
+                    clearInterval(timerID)
+                    endQuiz();
+                }
+            }, 1000);
+        }
+
+        function endQuiz() {
+            clearInterval(timerID);
+            $(".right-align").empty();
+            $mainBox = $("#main-box");
+            $mainBox.empty();
+            $done = $(`<h1>All Done!</h1>`);
+            $finalScore = $(`<h3>Your final score was ${timersCount}!</h3>`);
+            $mainBox.append($done, $finalScore)
+        }
+
+    </script>
+</body>
+
+</html>

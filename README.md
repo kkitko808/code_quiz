@@ -1,2 +1,1 @@
-# code_quiz
-timed quiz on using Javascript fundamentals.
+When cloned this will, when ran, start a basic league of legends quiz on random information. The score is attached to the timer remaining at the end which goes down each second or goes down by 10 if the user gets a question wrong. Uses JQuery to dynamically change the html.
